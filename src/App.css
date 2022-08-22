@@ -26,7 +26,8 @@
 .screen {
   width: calc(100% - 5px);
   height: calc(100% - 5px);
-  background-color: #F5F4F6;
+  /* background-color: #F5F4F6; */
+  background-image: url('./Images/climaWallpaper.webp');
   border-radius: 30px;
   overflow: hidden!important;
   background-repeat: no-repeat, repeat;
@@ -127,6 +128,11 @@
 .graus {
   font-size: 75px;
   color: #3A4152;
+  margin-bottom: 0px;
+}
+
+.weatherIcon {
+  width: 75px;
 }
 
 .inputs {

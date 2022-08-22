@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getApiWeather, getApiCity } from './Helpers/ApiFunction';
 import './App.css';
+import bateriaIcon from './Images/bateria-cheia.png'
+import wifiIcon from './Images/sinal-wifi.png'
+import sinalIcon from './Images/sinal.png'
+
 
 function App() {
   const [city, setCity] = useState('');
@@ -9,6 +13,7 @@ function App() {
   const [weather, setWeather] = useState('');
   const [graus, setGraus] = useState(0);
   const [cityInput, setCityInput] = useState('');
+  const [weatherIcon, setWeatherIcon] = useState('');
 
   const weatherFunc = async (param) => {
     const { current: weather, location } = await getApiWeather(param);
@@ -25,8 +30,7 @@ function App() {
     setRegion(`${location.country}, ${location.region}`);
     setWeather(weather.condition.text);
     setGraus(weather.temp_c);
-    console.log(weather);
-    console.log(location);
+    setWeatherIcon(weather.condition.icon);
   };
 
   useEffect(() => {
@@ -42,7 +46,7 @@ function App() {
         <div className="screen">
           <div className="top">
             <div className="dock-left">
-              <span className="clock">{time}</span>
+              <h4 className="clock">{time}</h4>
             </div>
             <div className="dock">
               <div className="sensor"></div>
@@ -53,16 +57,16 @@ function App() {
               <div className="signal">
                 <img
                   className="icon"
-                  src="https://cdn-icons.flaticon.com/png/128/1594/premium/1594818.png?token=exp=1660141310~hmac=7a5360226f51b6fdc7805ae6fb6b604a"
+                  src={ sinalIcon }
                 />
               </div>
               <div className="wifi">
-                <img className="icon" src="https://cdn-icons-png.flaticon.com/128/88/88014.png" />
+                <img className="icon" src={ wifiIcon } />
               </div>
               <div className="battery">
                 <img
                   className="icon"
-                  src="https://cdn-icons.flaticon.com/png/128/664/premium/664886.png?token=exp=1660141424~hmac=5473eaf94a381f9ca11629dacc021ecd"
+                  src={ bateriaIcon }
                 />
               </div>
             </div>
@@ -73,12 +77,13 @@ function App() {
             <h4 className="region">{region}</h4>
             <h1 className="graus">{`${graus}°C`}</h1>
             <h3 className="weather">{weather}</h3>
+            <img className="weatherIcon" src={ weatherIcon } />
           </div>
           <div className="inputs">
             <input
               type="text"
               value={cityInput}
-              placeholder="Cidade"
+              placeholder="City"
               onChange={({ target }) => {
                 setCityInput(target.value);
               }}
