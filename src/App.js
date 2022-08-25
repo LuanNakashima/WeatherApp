@@ -8,35 +8,30 @@ import sinalIcon from './Images/sinal.png'
 
 function App() {
   const [city, setCity] = useState('');
-  const [time, setTime] = useState('');
   const [region, setRegion] = useState('');
   const [weather, setWeather] = useState('');
   const [graus, setGraus] = useState(0);
   const [cityInput, setCityInput] = useState('');
   const [weatherIcon, setWeatherIcon] = useState('');
 
-  const weatherFunc = async (param) => {
-    const { current: weather, location } = await getApiWeather(param);
-    const hour = location.localtime
-      .split('')
-      .filter((a, i) => i > 10)
-      .toString()
-      .replace(',', '')
-      .replace(',', '')
-      .replace(',', '')
-      .replace(',', '');
-    setCity(location.name);
-    setTime(hour);
-    setRegion(`${location.country}, ${location.region}`);
-    setWeather(weather.condition.text);
-    setGraus(weather.temp_c);
-    setWeatherIcon(weather.condition.icon);
+  const weatherFunc = async (city) => {
+    const { main, name, weather } = await getApiWeather(city);
+    console.log(main);
+    console.log(weather);
+    const iconWeather = `https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/${
+      weather[0].icon
+    }.svg`
+    setCity(name);
+    setWeather(weather[0].description);
+    setGraus(String(main.temp).substring(0,2));
+    setWeatherIcon(iconWeather);
   };
 
   useEffect(() => {
     (async () => {
-      const { city: cityApi } = await getApiCity();
-      await weatherFunc(cityApi);
+      const { city, country, region } = await getApiCity();
+      setRegion(`${country} - ${region}`);
+      await weatherFunc(city);
     })();
   }, []);
 
@@ -46,7 +41,7 @@ function App() {
         <div className="screen">
           <div className="top">
             <div className="dock-left">
-              <h4 className="clock">{time}</h4>
+              <h4 className="clock">12:00</h4>
             </div>
             <div className="dock">
               <div className="sensor"></div>
